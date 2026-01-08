@@ -1,34 +1,34 @@
 const STATUS_FLOW = {
-    PENDING_BLO:{
-        role: "BLO",
-        next:["BLO_VERIFIED","REJECTED"],
-    },
+  PENDING_BLO: {
+    allowedRoles: ["BLO"],
+    next: ["BLO_VERIFIED", "REJECTED"]
+  },
 
-    BLO_VERIFIED:{
-        role:"ERO",
-        next:[
-            "ERO_APPROVED","REJECTED"
-        ],
-    },
-    ERO_APPROVED:{
-        role:"SYSTEM",
-        next:["ARCHIVED"],
-    },
-    REJECTED:{
-        role:"SYSTEM",
-        next:["ARCHIVED"],
-    },
+  BLO_VERIFIED: {
+    allowedRoles: ["ERO"],
+    next: ["ERO_APPROVED", "REJECTED"]
+  },
+
+  ERO_APPROVED: {
+    allowedRoles: ["SYSTEM", "ERO", "DEO", "CEO"],
+    next: ["ARCHIVED"]
+  },
+
+  REJECTED: {
+    allowedRoles: ["SYSTEM", "ERO", "DEO", "CEO"],
+    next: ["ARCHIVED"]
+  }
 };
 
-const canTransistion = ({currentstatus, nextStatus, userRole })=>{
-    const rule = STATUS_FLOW[currentstatus];
+const canTransition = ({ currentStatus, nextStatus, userRole }) => {
+  const rule = STATUS_FLOW[currentStatus];
+  if (!rule) return false;
 
-    if(!rule) return false;
+  if (!rule.next.includes(nextStatus)) return false;
 
-    if(rule.role != userRole && rule.role != "SYSTEM"){
-        return false;
-    }
-    return rule.next.includes(nextStatus);
+  if (!rule.allowedRoles.includes(userRole)) return false;
+
+  return true;
 };
 
-module.exports = {canTransistion};
+module.exports = { canTransition };

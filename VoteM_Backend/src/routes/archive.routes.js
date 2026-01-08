@@ -3,15 +3,13 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/auth.middleware");
 const authorizeRoles = require("../middleware/authorizeRoles");
-const {
-  getApplicationAuditTrail
-} = require("../controllers/audit.controller");
+const { archiveApplication } = require("../controllers/archive.controller");
 
-router.get(
-  "/:applicationId",
+router.post(
+  "/",
   authMiddleware,
-  authorizeRoles("BLO", "ERO", "DEO", "CEO"),
-  getApplicationAuditTrail
+  authorizeRoles("ERO", "DEO", "CEO"),
+  archiveApplication
 );
 
 module.exports = router;

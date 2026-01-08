@@ -8,6 +8,7 @@ const bloRoutes = require("./routes/blo.routes");
 const voterApplicationRoutes = require("./routes/voterApplication.routes");
 const eroRoutes = require("./routes/ero.routes");
 const auditRoutes = require("./routes/audit.routes")
+const archiveRoutes = require("./routes/archive.routes");
 
 
 connectdb();
@@ -18,6 +19,7 @@ app.use("/api/blo",bloRoutes);
 app.use("/api/voter",voterApplicationRoutes);
 app.use("/api/ero",eroRoutes);
 app.use("/api/audit",auditRoutes);
+app.use("/api/archive",archiveRoutes);
 app.get("/vote",authMiddleware,(req,res)=>{
     res.json(
         {status : "OK",

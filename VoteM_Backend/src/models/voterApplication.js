@@ -4,7 +4,7 @@ const voterApplicationSchema = new mongoose.Schema(
   {
     applicant: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
       required: true
     },
 
@@ -27,6 +27,11 @@ const voterApplicationSchema = new mongoose.Schema(
     assemblyConstituencyId: {
       type: String,
       required: true
+    },
+
+    formData:{
+      type:mongoose.Schema.Types.Mixed,
+      required:true
     },
 
     districtId: {
@@ -54,12 +59,12 @@ const voterApplicationSchema = new mongoose.Schema(
 
     assignedBLO: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user"
+      ref: "User"
     },
 
     verifiedBLO: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user"
+      ref: "User"
     },
 
     verifiedAt: Date,

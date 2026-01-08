@@ -1,5 +1,5 @@
 const VoterApplication = require("../models/voterApplication");
-const { canTransition } = require("../utils/statusFlow");
+const { canTransition } = require("../utils/statusflow");
 const { addAuditEntry } = require("../utils/auditLogger");
 const {detectDuplicate} = require("../utils/duplicateDetector")
 

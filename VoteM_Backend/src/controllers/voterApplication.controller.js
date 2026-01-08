@@ -4,34 +4,36 @@ const { addAuditEntry } = require("../utils/auditLogger");
 exports.submitApplication = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { formType, details } = req.body;
+    const { formType, formData } = req.body;
 
-    if (!formType || !details) {
+    if (!formType || !formData) {
       return res.status(400).json({
-        message: "formType aur details required hain"
+        message: "formType aur formData required hain"
       });
     }
 
     const application = new VoterApplication({
       applicant: userId,
       formType,
-      address: details.address,
-      boothId: details.boothId,
-      assemblyConstituencyId: details.assemblyConstituencyId,
-      districtId: details.districtId,
-      stateId: details.stateId,
+
+      address: formData.address,
+      boothId: formData.boothId,
+      assemblyConstituencyId: formData.assemblyConstituencyId,
+      districtId: formData.districtId,
+      stateId: formData.stateId,
+
+      formData,                
       status: "PENDING_BLO"
     });
 
     await application.save();
 
-    // ✅ Correct audit logging (separate collection)
     await addAuditEntry({
       applicationId: application._id,
-      userId: userId,
+      userId,
       role: "VOTER",
       action: "SUBMITTED",
-      remarks: "Voter application submitted"
+      remarks: `${formType} submitted`
     });
 
     return res.status(201).json({
